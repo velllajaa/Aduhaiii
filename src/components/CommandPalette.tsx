@@ -88,7 +88,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       label: 'Go to Daily Quota Tracker',
       icon: Users,
       category: 'Navigation',
-      action: () => { onSelectTab('tracker'); onClose(); },
+      action: () => { onSelectTab('quota'); onClose(); },
     },
     {
       id: 'tab_reports',

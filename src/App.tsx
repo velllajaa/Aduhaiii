@@ -348,6 +348,12 @@ export default function App() {
     handleUpdateSettings({ language: nextLang });
   };
 
+  const unloggedCount = appState.members.filter((m) => {
+    if (m.status === 'inactive') return false;
+    const log = appState.memberLogs[`${m.id}_${currentDate}`];
+    return !log || log.status === 'no_logs' || log.activityLevel === 'under_1h';
+  }).length;
+
   return (
     <div className="min-h-screen bg-[#07090e] text-zinc-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
       
@@ -372,8 +378,7 @@ export default function App() {
       <Navigation
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        selectedBattalionFilter={selectedBattalionFilter}
-        onBattalionFilterChange={setSelectedBattalionFilter}
+        unloggedCount={unloggedCount}
         language={appState.settings.language || 'en'}
       />
 
@@ -405,7 +410,7 @@ export default function App() {
         )}
 
         {/* Tab 1.5: Detailed Quota Cards */}
-        {activeTab === 'daily_quota' && (
+        {activeTab === 'quota' && (
           <DailyQuotaEntry
             currentDate={currentDate}
             members={appState.members}
@@ -414,7 +419,7 @@ export default function App() {
             onBulkUpdateStatus={handleBulkUpdateStatus}
             selectedBattalionFilter={selectedBattalionFilter}
             onFilterChange={setSelectedBattalionFilter}
-            onOpenAddMember={() => setActiveTab('members')}
+            onNavigateToMembers={() => setActiveTab('members')}
             settings={appState.settings}
           />
         )}
